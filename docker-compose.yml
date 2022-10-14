@@ -1,0 +1,23 @@
+version: '3.8'
+
+services: 
+    demo1-php: 
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports: 
+            - "8080:80"
+            - "8977:443"
+
+        restart: unless-stopped
+        volumes:
+            - ./app:/var/www/html
+
+    database:
+        image: mariadb
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: triumph
+            MYSQL_DATABASE: app
+        volumes:
+            - ./app/database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
